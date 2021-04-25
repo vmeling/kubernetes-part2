@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: health-ingress-rewrite
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    kubernetes.io/ingress.class: nginx
+spec:
+  defaultBackend:
+    service:
+      name: app-service
+      port:
+        number: 80
+  rules:
+    - host: arch.homework
+      http:
+        paths:
+          - path: /otusapp/vmeling(/|$)(.*)$
+            pathType: Exact
+            backend:
+              service:
+                name: app-service
+                port:
+                  number: 8080

@@ -1,1 +1,1 @@
-# kubernetes-part2
+# Otus. Kubernetes. Part 2

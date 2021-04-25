@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      lession: kubernetes.part2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        lession: kubernetes.part2
+    spec:
+      containers:
+        - name: health-app-php
+          image: vmeling/app-php:1.0
+          ports:
+            - name: php-port
+              containerPort: 9000
+          livenessProbe:
+            tcpSocket:
+              port: php-port
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          readinessProbe:
+            tcpSocket:
+              port: php-port
+            initialDelaySeconds: 2
+            periodSeconds: 2
+        - name: health-app-nginx
+          image: vmeling/app-nginx:1.0
+          ports:
+            - name: nginx-port
+              containerPort: 80
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: nginx-port
+            initialDelaySeconds: 2
+            periodSeconds: 2
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: nginx-port
+            initialDelaySeconds: 2
+            periodSeconds: 2

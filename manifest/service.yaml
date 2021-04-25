@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    lession: kubernetes.part2
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 80
